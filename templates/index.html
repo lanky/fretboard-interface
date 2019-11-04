@@ -9,13 +9,21 @@
 <div>
     <div>
         <form name="diagram" action="" method="post" novalidate>
+            <h1>Ukulele Chord Generator</h1>
             {{ chord_form.hidden_tag() }}
-            Choose an instrument:<br>
-            {{ chord_form.instrument }}
-            Title: {{ chord_form.title }}<br>
-            Fret positions: {{ chord_form.positions }}<br>
-            Finger numbers: {{ chord_form.fingers }}<br>
-            Override barre fret: {{ chord_form.barre }}<br>
+            Title: {{ chord_form.title }}<br/>
+            Fret positions: {{ chord_form.positions }}<br/>
+            Finger numbers: {{ chord_form.fingers }}<br/>
+            Override barre fret: {{ chord_form.barre }}<br/>
+            Label all Frets? {{ chord_form.label_all }}<br/>
+            <hr>
+            <p>
+            Additional Fingers are comma-separated, one per line<br/>
+            And look like this: "STRING,FRET,FINGER"<br/>
+            where strings are ZERO-INDEXED (i.e. 0, 1, 2 or 3)<br/>
+            This is not sanity checked yet, it won't stop you from doing dumb things<br/>
+            <p>
+            Additional Fingers: <br/>{{ chord_form.extras }}<br/>
             {{ chord_form.render }}
         </form>
     </div>

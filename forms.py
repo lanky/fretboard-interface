@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, RadioField, IntegerField, SubmitField
+from wtforms import StringField, BooleanField, RadioField, IntegerField, SubmitField, TextAreaField
 
 
 class ChordForm(FlaskForm):
@@ -9,6 +9,8 @@ class ChordForm(FlaskForm):
     label_all = BooleanField(label="Label all frets?", default=False)
     barre = IntegerField(label='Barre override', default=None)
     filename = StringField(label="Save As", default="chord.svg")
+
+    extras = TextAreaField(label='Extra Fingers', default=None)
 
     render = SubmitField(label='Render diagram')
     # need a field to 'add extra fingers' -
