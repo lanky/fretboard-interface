@@ -1,18 +1,17 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, RadioField, IntegerField, SubmitField
+from wtforms import StringField, BooleanField, RadioField, IntegerField, SubmitField
 
 
 class ChordForm(FlaskForm):
-    instrument = RadioField(
-        label='Pick an instrument',
-        choices=[('ukulele', 'Ukulele'), ('guitar', 'Guitar')],
-        default='ukulele'
-    )
     title = StringField(label='Chord title', default=None)
     positions = StringField(label='Positions', default='0000')
     fingers = StringField(label='Fingers', default='----')
+    label_all = BooleanField(label="Label all frets?", default=False)
     barre = IntegerField(label='Barre override', default=None)
+    filename = StringField(label="Save As", default="chord.svg")
+
     render = SubmitField(label='Render diagram')
+    # need a field to 'add extra fingers' -
 
 
 class DownloadForm(FlaskForm):
