@@ -1,5 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, RadioField, IntegerField, SubmitField, TextAreaField
+from wtforms import (
+    StringField,
+    BooleanField,
+    RadioField,
+    IntegerField,
+    SubmitField,
+    TextAreaField,
+    HiddenField
+    )
 
 
 class ChordForm(FlaskForm):
@@ -13,10 +21,17 @@ class ChordForm(FlaskForm):
     extras = TextAreaField(label='Extra Fingers', default=None)
 
     render = SubmitField(label='Render diagram')
-    # need a field to 'add extra fingers' -
+    # hidden field to hold diagram content
+    diagram = HiddenField(label="diagram content", default="No diagram")
 
 
 class DownloadForm(FlaskForm):
-    name = StringField(label='Name this image file', default='chord')
+    DL_FORMATS = [
+            ('svg', 'svg'),
+            ('png_t', 'png (transparent)'),
+            ('png', 'png')
+            ]
+    filename = StringField(label='Name this image file', default='chord')
+    format = RadioField(label="File format", choices=DL_FORMATS)
     submit = SubmitField('Download image')
 
