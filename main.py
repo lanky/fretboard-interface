@@ -1,5 +1,6 @@
+#!/opt/virtualenvs/chordmaker/bin/python
 from flask import Flask
-from views import my_view
+from .views import my_view
 
 app = Flask(__name__)
 app.register_blueprint(my_view)
