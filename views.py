@@ -1,25 +1,21 @@
 from flask import (
     render_template,
     request,
-    url_for,
     Blueprint,
-    current_app,
     make_response
     )
 
-from diagram import UkuleleChord, GuitarChord, MultiFingerChord
-from forms import ChordForm, DownloadForm
+from diagram import MultiFingerChord
+from .forms import ChordForm, DownloadForm
 
 import cairosvg
 from wand.image import Image
 
 import yaml
 
+from .config import DEFAULT_STYLE
 
 my_view = Blueprint('my_view', __name__)
-
-chord_style = yaml.safe_load(open('chord_diagram.yml'))
-
 
 @my_view.route('/', methods=['GET', 'POST'])
 def home():
@@ -31,6 +27,8 @@ def home():
                 )
                 for x in chord_form.extras.data.splitlines()
         ]
+
+        chord_style = DEFAULT_STYLE
 
         chord_style['drawing']['label_all_frets'] = chord_form.label_all.data
         print(chord_style)
