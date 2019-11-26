@@ -1,5 +1,3 @@
-# git+git://github.com/birdcolour/python-fretboard@1.2.7
-
 attrdict
 Click
 Flask
@@ -13,3 +11,5 @@ six
 svgwrite
 Werkzeug
 WTForms
+cairosvg
+Wand
