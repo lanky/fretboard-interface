@@ -1,62 +1,10 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
-    <title>Create chord diagrams</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+{% from 'bootstrap/form.html' import render_form %}
 <div>
-    <div>
-        <form id="chordform" name="diagram" action="" method="post" novalidate>
-            <h1>Ukulele Chord Generator</h1>
-            {{ chord_form.hidden_tag() }}
-            Title: {{ chord_form.title }}<br/>
-            Fret positions: {{ chord_form.positions }}<br/>
-            Finger numbers: {{ chord_form.fingers }}<br/>
-            Override barre fret: {{ chord_form.barre }}<br/>
-            Label all Frets? {{ chord_form.label_all }}<br/>
-            <hr>
-            <p>
-            Additional Fingers are comma-separated, one per line<br/>
-            And look like this: "STRING,FRET,FINGER"<br/>
-            where strings are ZERO-INDEXED (i.e. 0, 1, 2 or 3)<br/>
-            This is not sanity checked yet, it won't stop you from doing dumb things<br/>
-            <p>
-            Additional Fingers: <br/>{{ chord_form.extras }}<br/>
-            {{ chord_form.render }}
-        </form>
-    </div>
-    <div>
-        <img src="{{ diagram }}">
+    {{ render_form(form, form_type='inline') }}
+    <div class="diagram">
+        {{ diagram|safe }}
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-<script>
-    $( document ).ready(function) {
-        $("#chordform").submit(function(e) {
-            $.ajax({
-                url: '/apps/chordmaker/api/v1/chord/',
-                type: 'post',
-                data: $('form#chordform').serialize(),
-                success: function(response) {
-                    alert(response)
-                    }
-            });
-        });
-    });
-</script>
-</body>
-</html>
+{% endblock content %}
