@@ -1,0 +1,27 @@
+@charset: "utf-8";
+
+.tooem {
+    width: 3em;
+    max-width: 3em;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.noborder {
+    border: 0;
+    margin: 1em;
+    width: 35rem;
+}
+
+.diagram {
+    float: left;
+    border: 0;
+}
+
+.card {
+    float: left;
+}
+
+.gutter {
+    margin: 0 5px;
+}

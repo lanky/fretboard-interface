@@ -1,41 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>Create chord diagrams</title>
-</head>
-<body>
+{# vim: set ts=2 sts=2 sw=2 et ci: #}
+{% macro icon(type=None, extra_classes=[]) -%}
+<span{{ ({'class': (['glyphicon', 'glyphicon-' + type] + extra_classes)|join(' ')})|xmlattr}}{{kwargs|xmlattr}}></span>
+{%- endmacro %}
+{% macro form_button(url, content, method='post', class='btn-link') -%}
+<form style="display: inline;" action='{{url}}' method='{{method}}'><button class="{{class|safe}}">{{content}}</button></form>
+{%- endmacro %}
+{% extends "base.html" %}
+{% block styles %}
+{# include the parent styles from base #}
+{{ super() }}
+{% endblock styles %}
+{% block title %}
+Lanky's Supermagilistic Ukumelele Chord Mangler
+{% endblock title %}
+{% block content %}
+<h2>Ukumelele Chord Mangler</h2>
+<div class="card noborder">
+  <form name="diagram" action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="form-group form-row">
+      {{ form.title.label(class_="col-sm-3") }}
+      {{ form.title(class_="form-control form-control-sm col-sm-6") }}
+    </div>
 
-<div>
-    <div>
-        <form name="diagram" action="" method="post" novalidate>
-            <h1>Ukulele Chord Generator</h1>
-            {{ chord_form.hidden_tag() }}
-            Title: {{ chord_form.title }}<br/>
-            Fret positions: {{ chord_form.positions }}<br/>
-            Finger numbers: {{ chord_form.fingers }}<br/>
-            Override barre fret: {{ chord_form.barre }}<br/>
-            Label all Frets? {{ chord_form.label_all }}<br/>
-            <hr>
-            <p>
-            Additional Fingers are comma-separated, one per line<br/>
-            And look like this: "STRING,FRET,FINGER"<br/>
-            where strings are ZERO-INDEXED (i.e. 0, 1, 2 or 3)<br/>
-            This is not sanity checked yet, it won't stop you from doing dumb things<br/>
-            <p>
-            Additional Fingers: <br/>{{ chord_form.extras }}<br/>
-            {{ chord_form.render }}
-        </form>
+    <div class="form-group form-row">
+    <label for="positions" class="col-sm-3">Positions</label>
+    {% for pos in form.positions %}
+      {{ pos(class_="form-control form-control-sm col-sm-1 tooem") }}
+    {% endfor %}
     </div>
-    <div>
-        <img src="{{ diagram }}">
+
+    <div class="form-group form-row">
+    <label for="fingers" class="col-sm-3">Fingers</label>
+    {% for lab in form.fingers %}
+      {{ lab(class_="form-control form-control-sm col-sm-1 tooem") }}
+    {% endfor %}
     </div>
+
+    <div class="form-group form-row" title="draw a full barre at the lowest fretted non-zero fretted position">
+      <label for="barre" class="col-sm-3">Draw Barre?</label>
+      {{ form.barre(class_="form-check-inline") }}
+    </div>
+
+    <div class="form-group form-row" title="put fret numbers to the right. Only works if your chord does not start at the nut (fret 0)">
+      <label for="barre" class="col-sm-3">Label All Frets?</label>
+      {{ form.label_all(class_="form-check-inline", title="put fret numbers to the right. Only works if your chord does not start at the nut (fret 0)") }}
+    </div>
+
+    <div data-toggle="fieldset" id="extra_fieldset" class="form-group">
+        {{ form.extras.label(class_="col-sm-3") }}
+        <p>To add a extra marker, click on the '+' button</p>
+        <table class="ui table">
+            <thead>
+              <th>String</th>
+              <th>Fret</th>
+              <th>Label</th>
+              <th><input type="button" title="add another marker row"
+                         value="+" id="addmarker"></input></th>
+            </thead>
+            <tbody id="extras">
+            {% for f in form.extras %}
+              <tr data-toggle="fieldset-entry" class="extras_row">
+                <td>{{ f.string(class_="form-control form-control-sm col-sm-1 tooem") }}</td>
+                <td>{{ f.fret(class_="form-control form-control-sm col-sm-1 tooem") }}</td>
+                <td>{{ f.marker(class_="form-control form-control-sm col-sm-1 tooem") }}</td>
+                <td>{{ f.removeme(class_="delmarker", title="remove the current row") }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group form-row">
+    {{ form.render(class_="btn btn-primary gutter") }}
+    {{ form.getsvg(class_="btn btn-primary gutter") }}
+    {{ form.getpng(class_="btn btn-primary gutter") }}
+    </div>
+  </form>
+  </div>
+<div class="card diagram">
+{{ diagram|safe }}
 </div>
-
-<!--
-<form>
-    <input type="submit" name='btn' value="Download">
-</form>
--->
-</body>
+{% endblock content %}
 </html>

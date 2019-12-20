@@ -1,8 +1,12 @@
+import os
 import yaml
 
-SECRET_KEY = 'unguessable-secret'
 
-DEFAULT_STYLE = yaml.safe_load("""
+class Config(object):
+
+    SECRET_KEY = 'unguessable-secret'
+
+    DEFAULT_STYLE = yaml.safe_load("""
 ---
 drawing:
   background_color:
