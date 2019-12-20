@@ -48,6 +48,11 @@ Lanky's Supermagilistic Ukumelele Chord Mangler
       {{ form.label_all(class_="form-check-inline", title="put fret numbers to the right. Only works if your chord does not start at the nut (fret 0)") }}
     </div>
 
+    <div class="form-group form-row" title="Make a sinister left-handed version for the snowflakes">
+      <label for="barre" class="col-sm-3">Make Sinister?</label>
+      {{ form.reverse(class_="form-check-inline") }}
+    </div>
+
     <div data-toggle="fieldset" id="extra_fieldset" class="form-group">
         {{ form.extras.label(class_="col-sm-3") }}
         <p>To add a extra marker, click on the '+' button</p>

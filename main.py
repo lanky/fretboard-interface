@@ -37,6 +37,7 @@ def create_diagram(**kwargs):
         bpos = None
 
     title = kwargs.get("title", "")
+    sinister = kwargs.get('reverse', False)
 
     # extras is now automatically a list of dicts
     valid_extras = [
@@ -47,15 +48,24 @@ def create_diagram(**kwargs):
         extras = valid_extras
         for e in extras:
             e["label"] = e["marker"]
+        if sinister:
+            e["string"] = abs(int(e["string"]) - 3)
     else:
         extras = None
+
+    pos = kwargs.get("positions", "0000")
+    fings = kwargs.get("fingers", "----")
+
+    if sinister:
+        pos.reverse()
+        fings.reverse()
 
     # need to swap 'finger' for 'label'
 
     diag = MultiFingerChord(
         title=title,
-        positions=kwargs.get("positions", "0000"),
-        fingers=kwargs.get("fingers", "----"),
+        positions=pos,
+        fingers=fings,
         barre=bpos,
         style=chord_style,
         extras=extras,
@@ -65,7 +75,7 @@ def create_diagram(**kwargs):
     d.seek(0)
     hdr, data = d.read().splitlines()
 
-    s = bs(data)
+    s = bs(data, features='lxml')
     del s.svg["baseprofile"]
 
     return str(s)
@@ -100,12 +110,11 @@ def home():
         # Diagram
 
         if chord_form.validate_on_submit():
-            print(chord_form.data)
             diag = create_diagram(**chord_form.data)
             print(diag)
 
             if chord_form.getsvg.data is True:
-                soup = bs(diag)
+                soup = bs(diag, features='lxml')
                 del soup.svg["baseprofile"]
                 return mkres("svg", chord_form.title.data, str(soup))
             elif chord_form.getpng.data is True:
@@ -122,11 +131,6 @@ def home():
     return render_template(
         "index.html", diagram=create_diagram(title=""), form=chord_form,
     )
-
-
-@app.route("/add_marker")
-def add_marker():
-    f = request.form
 
 
 @app.route("/api/v1/chord/", methods=["POST"])

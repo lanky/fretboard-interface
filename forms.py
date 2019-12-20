@@ -51,7 +51,8 @@ class ChordForm(FlaskForm):
     addmarker = SubmitField("+")
 
     label_all = BooleanField(label="Label all frets", default=False)
-    barre = BooleanField("Draw Barre", default=None)
+    barre = BooleanField("Draw Barre", default=False)
+    reverse = BooleanField("Make Sinister", default=False)
     filename = StringField(label="Save As", default="chord.svg")
 
     render = SubmitField("Render diagram")
